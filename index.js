@@ -6,6 +6,7 @@
 
 'use strict';
 
+var fis = require('./libs/simplefis/simplefis.js');
 var cssParser = require('./libs/cssParser.js');
 var imgGen;
 try {
