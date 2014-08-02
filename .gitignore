@@ -9,5 +9,7 @@ tmp
 *.bak
 *.tmp
 *.swp
+*.un~
 .DS_Store
 fis-sprite.iml
+fis-spriter-csssprites.iml
