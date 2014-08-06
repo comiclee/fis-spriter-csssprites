@@ -15,7 +15,7 @@ try {
     fis.log.warning('csssprites does not support your node ' + process.version +
         ', report it to https://github.com/xiangshouding/fis-spriter-csssprites/issues');
 }
-
+//ret,settings,opt分别是什么，ret表示一种预处理的结果
 module.exports = function(ret, conf, settings, opt) {
     if (!imgGen) {
         return;
@@ -56,16 +56,27 @@ function processInline(file, ret, settings, opt) {
     file.setContent(content);
 }
 
+/**
+ *
+ * @param content file content of css file or style content in <style> tag
+ * @param file css or html like File object, wrap by File
+ * @param index the index of <style> tag , can be null
+ * @param ret
+ * @param settings
+ * @param opt
+ * @return {*}
+ * @private
+ */
 function _process(content, file, index, ret, settings, opt){
-    var images = {};
+    var images = {};  //{'http://domain/xxx_hash.ext':imgfile} 项目里的所有图片
     fis.util.map(ret.src, function (subpath, file) {
         if (file.isImage()) {
             images[file.getUrl(opt.hash, opt.domain)] = file;
         }
     });
     var res = cssParser(content, images);
-    var content = res.content;
-    if (res.map && res.map.length > 0) {
+    var content = res.content;  //替换后的css，去掉了background属性，添上了background-repeat属性
+    if (res.map && res.map.length > 0) {  //含有sprite写法的rules的列表
         var css = imgGen(file, index, res.map, images, ret, settings, opt);
         content = content + css;
     }
